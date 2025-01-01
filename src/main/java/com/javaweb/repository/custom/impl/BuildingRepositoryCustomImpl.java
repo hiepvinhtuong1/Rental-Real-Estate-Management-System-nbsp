@@ -123,8 +123,12 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
 
         List<String> typeCode = buildingSearchBuilder.getTypeCode();
         if (typeCode != null && typeCode.size() != 0) {
+            where.append(" AND ( ");
             for (String type : typeCode) {
-                where.append(" OR b.type " + " LIKE '%" + type + "%'");
+                where.append("b.type LIKE '%" + type + "%' OR ");
+                if (type.equals(typeCode.get(typeCode.size() - 1))) {
+                    where.append("b.type LIKE '%" + type + "%')");
+                }
             }
         }
     }
